@@ -4,7 +4,7 @@ body { position: relative; padding-left: 3.5em !important; }
 .code-line[data-ln]::before {
   content: attr(data-ln);
   position: absolute;
-  left: 0;
+  left: var(--ln-left, 0px);
   width: 2.5em;
   margin-top: var(--ln-top, 0px);
   font-size: var(--ln-fs, 12px);
@@ -15,6 +15,13 @@ body { position: relative; padding-left: 3.5em !important; }
   color: var(--vscode-editorLineNumber-foreground, #888);
   pointer-events: none;
 }
+
+/* In a code block the line marker is on <code>, inside <pre>. The <pre> clips overflow,
+   which would hide the number in the gutter. Let the <pre> overflow, and scroll long
+   code inside the <code> element instead. The <code> must stay unpositioned, or it
+   would become the number's box and clip it. */
+pre:has(> code.code-line) { overflow: visible; }
+pre > code.code-line { display: block; overflow-x: auto; position: static !important; }
 
 /* Brief highlight of the block a #L<line> link jumped to. */
 .code-line.ln-target {

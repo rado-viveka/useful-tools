@@ -109,12 +109,24 @@
     if (document.visibilityState === 'visible') checkStoredJump();
   });
 
+  // The box an absolutely positioned ::before of el is placed against.
+  // (offsetParent is wrong for table rows: it returns the table.)
+  function positionedBox(el) {
+    for (var p = el; p && p !== document.body; p = p.parentElement) {
+      if (getComputedStyle(p).position !== 'static') return p;
+    }
+    return document.body;
+  }
+
   function number() {
     pending = false;
     var fs = px(getComputedStyle(document.body).fontSize, 14) * 0.6;
+    var bodyLeft = document.body.getBoundingClientRect().left + document.body.clientLeft;
     document.querySelectorAll('.code-line[data-line]').forEach(function (el) {
       var line = el.getAttribute('data-line');
-      if (SKIP[el.tagName] || el.querySelector('.code-line[data-line="' + line + '"]')) {
+      // Also skip empty markers, such as the end-of-document marker the preview adds for scroll sync.
+      var empty = !el.textContent.trim() && !el.querySelector('img, svg, video, hr') && el.tagName !== 'HR';
+      if (SKIP[el.tagName] || empty || el.querySelector('.code-line[data-line="' + line + '"]')) {
         el.removeAttribute('data-ln');
         return;
       }
@@ -126,6 +138,12 @@
       el.style.setProperty('--ln-lh', lh + 'px');
       el.style.setProperty('--ln-top', top + 'px');
       el.style.setProperty('--ln-fs', fs + 'px');
+      // The number is positioned against the nearest positioned box. Code blocks, and every
+      // block while the preview marks the editor selection, are positioned themselves,
+      // so shift the number back to the body's left edge (the gutter).
+      var box = positionedBox(el);
+      var left = bodyLeft - (box.getBoundingClientRect().left + box.clientLeft);
+      el.style.setProperty('--ln-left', left + 'px');
       el.setAttribute('data-ln', String(Number(line) + 1));
     });
     if (targetLine !== null) revealTarget();
@@ -149,7 +167,9 @@
       window.addEventListener(t, stop, { once: true, passive: true });
     });
     function go() {
-      if (!userScrolled) window.scrollTo(0, best.getBoundingClientRect().top + window.scrollY - 40);
+      // Leave a fifth of the view above the target, so the heading before it stays visible.
+      var margin = Math.max(40, window.innerHeight * 0.2);
+      if (!userScrolled) window.scrollTo(0, best.getBoundingClientRect().top + window.scrollY - margin);
     }
     go();
     [100, 300, 700, 1500].forEach(function (ms) { setTimeout(go, ms); });
