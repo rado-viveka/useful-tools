@@ -3,7 +3,7 @@
 A small VS Code extension for the built-in Markdown preview. It:
 
 - Shows the source line number next to each block (heading, paragraph, list item, table row, code block).
-- Scrolls to a line when you click a link with a line fragment, such as `[Menu:34](menu.md#L34)` or `[see](#L42)`. The target block is highlighted for 2 seconds.
+- Scrolls to a line when you click a link with a line fragment, such as `[Menu:34](menu.md#L34)` or `[see](#L42)`. The target block stays highlighted until the next jump.
 
 Source on the left, preview with line numbers on the right:
 

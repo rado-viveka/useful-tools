@@ -23,7 +23,7 @@ body { position: relative; padding-left: 3.5em !important; }
 pre:has(> code.code-line) { overflow: visible; }
 pre > code.code-line { display: block; overflow-x: auto; position: static !important; }
 
-/* Brief highlight of the block a #L<line> link jumped to. */
+/* Highlight of the block a #L<line> link jumped to. It stays until the next jump. */
 .code-line.ln-target {
   background-color: var(--vscode-editor-findMatchHighlightBackground, rgba(255, 200, 0, 0.3));
   transition: background-color 0.5s;

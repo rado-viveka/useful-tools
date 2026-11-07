@@ -2,7 +2,7 @@
   "name": "markdown-line-numbers",
   "displayName": "Markdown Preview Line Numbers",
   "description": "Shows source line numbers in the built-in Markdown preview.",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "publisher": "rado",
   "engines": { "vscode": "^1.80.0" },
   "categories": ["Other"],

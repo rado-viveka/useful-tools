@@ -174,8 +174,9 @@
     go();
     [100, 300, 700, 1500].forEach(function (ms) { setTimeout(go, ms); });
     if (document.readyState !== 'complete') window.addEventListener('load', go, { once: true });
+    // Keep the highlight until the next jump.
+    document.querySelectorAll('.ln-target').forEach(function (el) { el.classList.remove('ln-target'); });
     best.classList.add('ln-target');
-    setTimeout(function () { best.classList.remove('ln-target'); }, 2000);
   }
 
   function schedule() {
