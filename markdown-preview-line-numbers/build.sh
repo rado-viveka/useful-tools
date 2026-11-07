@@ -9,7 +9,8 @@ rm -f "$OUT"
 python3 -I - "$OUT" <<'PY'
 import sys, zipfile
 files = ['[Content_Types].xml', 'extension.vsixmanifest',
-         'extension/package.json', 'extension/line-numbers.css', 'extension/line-numbers.js']
+         'extension/package.json', 'extension/extension.js',
+         'extension/line-numbers.css', 'extension/line-numbers.js']
 with zipfile.ZipFile(sys.argv[1], 'w', zipfile.ZIP_DEFLATED) as z:
     for f in files:
         z.write(f)

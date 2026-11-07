@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Language="en-US" Id="markdown-line-numbers" Version="0.0.10" Publisher="rado" />
+    <Identity Language="en-US" Id="markdown-line-numbers" Version="0.0.13" Publisher="rado" />
     <DisplayName>Markdown Preview Line Numbers</DisplayName>
     <Description xml:space="preserve">Shows source line numbers in the built-in Markdown preview.</Description>
     <Categories>Other</Categories>

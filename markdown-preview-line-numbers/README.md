@@ -25,11 +25,12 @@ To remove it: `code --uninstall-extension rado.markdown-line-numbers`.
 
 ## How it works
 
-The extension has no extension-host code. It only contributes a stylesheet and a script to the Markdown preview (`markdown.previewStyles` and `markdown.previewScripts`).
+The extension contributes a stylesheet and a script to the Markdown preview (`markdown.previewStyles` and `markdown.previewScripts`), plus one URI handler in `extension/extension.js`.
 
 - **Line numbers.** The preview marks each block with a 0-based `data-line` attribute. The script copies it to `data-ln` as a 1-based number, and the CSS draws it in the left gutter. Containers (tables, lists, quotes) are skipped, because their first child already shows the same number.
 - **Line links.** Fragments `#L163`, `#L163,5` and `#L163-L170` are supported. The preview scrolls to the last block that starts at or before the line.
 - **Links to other files.** When `*.md` opens in the "Markdown Preview" custom editor, VS Code drops the `#L163` fragment before the new preview loads. To work around this, the preview you click stores the target path and line in `localStorage`. The preview that opens reads it (valid for 15 seconds). Previews of the same kind share an origin, so they share `localStorage`.
+- **Links from outside VS Code** (chat, terminal, browser). A `vscode://file/<path>:<line>` link loses the line when `*.md` opens in the preview. Use `vscode://rado.markdown-line-numbers/open?path=<absolute path>&line=<line>` instead (`&column=<n>` is optional). The handler opens the text editor at the line, reopens the file in the preview, and closes the text tab it opened. The built-in preview starts at the top line the text editor showed last. Other file types stay in the text editor at the line. The first time, VS Code asks whether to allow the extension to open the URI.
 
 ## Limits
 

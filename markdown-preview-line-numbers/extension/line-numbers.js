@@ -15,6 +15,8 @@
   var settings = readSettings();
   var sourcePath = pathOf(settings.source);
   var targetLine = lineFromFragment(settings.fragment) || takeStoredJump();
+  var thisScript = document.currentScript;
+  loadHandlerJump();
 
   function log() {
     console.log.apply(console, ['[md-line-numbers]'].concat([].slice.call(arguments)));
@@ -68,6 +70,26 @@
     } catch (e) {
       return null;
     }
+  }
+
+  // A jump written by the URI handler (extension.js) to jump.js next to this script.
+  // The preview allows scripts that carry its nonce, and this script's folder is a
+  // preview resource root, so load jump.js the same way this script was loaded.
+  function loadHandlerJump() {
+    if (!thisScript || !thisScript.src || !sourcePath) return;
+    var s = document.createElement('script');
+    s.nonce = thisScript.nonce;
+    s.src = thisScript.src.replace(/line-numbers\.js(\?.*)?$/, 'jump.js') + '?t=' + Date.now();
+    s.onload = function () {
+      var jump = window.__mdLineNumbersJump;
+      s.remove();
+      if (!jump || jump.path !== sourcePath || Date.now() - jump.time > JUMP_MAX_AGE_MS) return;
+      log('handler jump for this file: line', jump.line);
+      targetLine = jump.line;
+      schedule();
+    };
+    s.onerror = function () { s.remove(); };
+    document.head.appendChild(s);
   }
 
   // Clicks on links with a #L<line> fragment.
