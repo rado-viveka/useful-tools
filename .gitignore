@@ -1,1 +1,3 @@
 *.vsix
+intellij-markdown-preview-line-numbers/build/
+intellij-markdown-preview-line-numbers/*.zip

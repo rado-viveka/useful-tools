@@ -1,0 +1,16 @@
+<idea-plugin>
+  <id>rado.markdown-line-numbers</id>
+  <name>Markdown Preview Line Numbers</name>
+  <version>0.0.2</version>
+  <vendor>rado</vendor>
+  <description>Shows the source line number next to each block in the built-in Markdown preview, and follows links with a line fragment (#L34).</description>
+  <idea-version since-build="263"/>
+  <depends>com.intellij.modules.platform</depends>
+  <depends>org.intellij.plugins.markdown</depends>
+  <extensions defaultExtensionNs="com.intellij">
+    <notificationGroup id="Markdown Preview Line Numbers" displayType="BALLOON"/>
+  </extensions>
+  <extensions defaultExtensionNs="org.intellij.markdown">
+    <browserPreviewExtensionProvider implementation="rado.mdlinenumbers.LineNumbersExtension$Provider"/>
+  </extensions>
+</idea-plugin>
